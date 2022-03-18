@@ -4,7 +4,7 @@ require_once('library/Telegram.php');
 require_once('api.php');
 include_once('user.php');
 
-$telegram = new Telegram("5043257754:AAGtSjpmSU4dIaShP1YIhdePHHfxxLUM7Zs", true);
+$telegram = new Telegram("5117795199:AAGg4FIN3IQ4v55uNNdK_88JQJroWNkACHQ", true);
 $api = new Api("c2519906f5612a7f2b8c9953409e0626");
 $Admin = "829349149";
 
