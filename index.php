@@ -354,7 +354,4 @@ function resendMessage($text){
     $content = ['chat_id' => $chat_id, 'text' => $text];
     $telegram->sendMessage($content);
 }
-
-// var_dump($api->getWeather('41', '72', strtotime("-1 days")));
-// var_dump(date('Y.m.d H:i', 1647543600));
 ?>
