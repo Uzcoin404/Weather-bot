@@ -4,7 +4,7 @@ require_once('library/Telegram.php');
 require_once('api.php');
 include_once('user.php');
 
-$telegram = new Telegram("5117795199:AAGg4FIN3IQ4v55uNNdK_88JQJroWNkACHQ", true);
+$telegram = new Telegram("5043257754:AAGtSjpmSU4dIaShP1YIhdePHHfxxLUM7Zs", true);
 $api = new Api("c2519906f5612a7f2b8c9953409e0626");
 $Admin = "829349149";
 
@@ -26,7 +26,7 @@ if ($text == '/start') {
 } else {
     switch (getData($chat_id, 'page')) {
         case 'start':
-            if ($text == 'Shahar') {
+            if ($text == '🌆 Shahar') {
                 getCityName();
                 setData($chat_id, 'page', 'getCity');
             } else if ($location) {
@@ -38,7 +38,7 @@ if ($text == '/start') {
                 if (isset($weather['coord']['lat'])) {
                     setData($chat_id, 'city', $weather['name']. ' (' .$weather['sys']['country'] . ')');
                 }
-            } else if ($text == 'Joylashuvim'){
+            } else if ($text == '🏠 Joylashuvim'){
                 $telegram->sendMessage(['chat_id' => $chat_id, 'text' => "Sizning qurilmangiz lokatsiyani yubora olmadi"]);
             } else {
                 $telegram->sendMessage(['chat_id' => $chat_id, 'text' => "Manzilda adashdingiz /start ni bosing"]);
@@ -52,7 +52,7 @@ if ($text == '/start') {
                 setData($chat_id, 'city', $weather['name']. ' (' .$weather['sys']['country'] . ')');
                 setData($chat_id, 'page', 'main');
                 gettingReady();
-            } else if ($text == 'Orqaga') {
+            } else if ($text == '◀️ Orqaga') {
                 setData($chat_id, 'page', 'start');
                 showStart();
             } else {
@@ -60,11 +60,8 @@ if ($text == '/start') {
                 $telegram->sendMessage($content);
             }
             break;
-        case 'location':
-            
-            break;
         case 'main':
-            if ($text != 'Bosh sahifa') {
+            if ($text != '🏠 Bosh sahifa') {
                 showWeather($userLat, $userLon, $text);
             } else {
                 setData($chat_id, 'page', 'start');
@@ -88,34 +85,34 @@ function showStart() {
     $condition = weatherCondition($weather);
     $temp = weatherWarm($weather['temp']);
     
-    $text = welcome()." Bugun $month oyining $day-inchi kuni $week. Naqadar fayzli kun \nBugun O'zbekistonda havo $condition $temp \nSoat millari $hour dan $min daqiqa o'tganini ko'rsatmoqda";
-    $content = ['chat_id' => $chat_id, 'text' => $text];
+    $text = '*👋 '. welcome()." Bugun 📅 $month oyining $day\-inchi kuni $week\. Naqadar fayzli kun 😎 \n🌤 Bugun O'zbekistonda havo $condition $temp \n⌚️ Soat millari $hour dan $min daqiqa o'tganini ko'rsatmoqda*";
+    $content = ['chat_id' => $chat_id, 'text' => $text, 'parse_mode' => 'markdownV2'];
     $telegram->sendMessage($content);
     
     $main_menu = $telegram->buildKeyBoard([
-    [$telegram->buildKeyboardButton("Shahar"),
-    $telegram->buildKeyboardButton("Joylashuvim", false, true)]]);
+    [$telegram->buildKeyboardButton("🌆 Shahar"),
+    $telegram->buildKeyboardButton("🏠 Joylashuvim", false, true)]]);
 
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => "Quyidagi berilgan tugmalar orqali Ob-havoni bilib oling",  'reply_markup' => $main_menu]);
+    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => "🕹 Quyidagi berilgan tugmalar orqali Ob-havoni bilib oling 🌤",  'reply_markup' => $main_menu]);
 }
 
 function getCityName(){
     global $telegram, $chat_id;
 
-    $backButton = $telegram->buildKeyBoard([[$telegram->buildKeyboardButton('Orqaga')]]);
-    $content = ['chat_id' => $chat_id, 'text' => "_Iltimos Shahar nomini Lotin yozuvi va Ingliz tilida yuboring_", 'parse_mode' => 'markdownV2', 'reply_markup' => $backButton];
+    $backButton = $telegram->buildKeyBoard([[$telegram->buildKeyboardButton('◀️ Orqaga')]]);
+    $content = ['chat_id' => $chat_id, 'text' => "📝 _Iltimos Shahar nomini Lotin alifbosi va Ingliz tilida yuboring_ ❗️", 'parse_mode' => 'markdownV2', 'reply_markup' => $backButton];
     $telegram->sendMessage($content);
 }
 
 function gettingReady(){
     global $telegram, $chat_id;
 
-    $weatherButtons = $telegram->buildKeyBoard([[$telegram->buildKeyboardButton('Ayni payt'), $telegram->buildKeyboardButton('Bugun')],
-    [$telegram->buildKeyboardButton('Kecha'),
-    $telegram->buildKeyboardButton('Ertaga')],
-    [$telegram->buildKeyboardButton('7 Kunlik'), $telegram->buildKeyboardButton('Bosh sahifa')]]);
+    $weatherButtons = $telegram->buildKeyBoard([[$telegram->buildKeyboardButton('🕹 Ayni payt'), $telegram->buildKeyboardButton('🕹 Bugun')],
+    [$telegram->buildKeyboardButton('🕹 Kecha'),
+    $telegram->buildKeyboardButton('🕹 Ertaga')],
+    [$telegram->buildKeyboardButton('🕹 7 Kunlik'), $telegram->buildKeyboardButton('🏠 Bosh sahifa')]]);
 
-    $content = ['chat_id' => $chat_id, 'text' => "*Ob\-havo ma'lumotlari olindi Quyidagi Prognozlarni ko'rishingiz mumkin*", 'parse_mode' => 'markdownV2', 'reply_markup' => $weatherButtons];
+    $content = ['chat_id' => $chat_id, 'text' => "*😶‍🌫️ Ob\-havo ma'lumotlari olindi Quyidagi Prognozlarni ko'rishingiz mumkin* 🕹", 'parse_mode' => 'markdownV2', 'reply_markup' => $weatherButtons];
     $telegram->sendMessage($content);
 }
 
@@ -127,23 +124,23 @@ function showWeather($lat, $lon, $type){
 
     if (trim($lat) != '' && trim($lon) != '' && trim($type) != '') {
         switch ($type) {
-            case 'Ayni payt':
+            case '🕹 Ayni payt':
                 $weather = $api->getWeather($lat, $lon)['current'];
                 $current = true;
                 break;
-            case 'Bugun':
+            case '🕹 Bugun':
                 $weather = $api->getWeather($lat, $lon)['daily'][0];
                 $daily = true;
                 break;
-            case 'Kecha':
+            case '🕹 Kecha':
                 $weather = $api->getWeather($lat, $lon, strtotime('00:00'))['hourly'];
                 $previous = true;
                 break;
-            case 'Ertaga':
+            case '🕹 Ertaga':
                 $weather = $api->getWeather($lat, $lon)['daily'][1];
                 $daily = true;
                 break;
-            case '7 Kunlik':
+            case '🕹 7 Kunlik':
                 $weather = $api->getWeather($lat, $lon)['daily'];
                 $sevenDay = true;
                 break;
@@ -185,36 +182,22 @@ function showWeather($lat, $lon, $type){
     } else {
         $temp = weatherWarm($weather['temp']);
     }
-    $fixedText = "Bosim:  $pressure, \nNamlik:  $humidity,\nOsmonda ko'rinadigan (taxminiy) bulutlar soni:  $clouds, \nShamol tezligi:  $wind,";
+    $fixedText = "Bosim:  $pressure, \n✅ Namlik:  $humidity,\n\n☁️ Osmonda ko'rinadigan (taxminiy) bulutlar soni:  $clouds, \n💨 Shamol tezligi:  $wind,";
     $text = '';
 
     if (!$previous) {
         if ($current) {
             $weatherType = $type . 'dagi';
 
-            $text = "$city Shahridagi $weatherType Ob-havo:
-            $condition $temp
-            Haqiqiy his:  $feels_like,
-            $fixedText
-            Quyosh chiqishi:  $sunrise,
-            Quyosh botishi:  $sunset,
-        
-            Sana: $date vaqtiga ko'ra ma'lumotlar olindi";
+            $text = "🌍 $city Shahridagi 🌇 \n\n🗓 $weatherType Ob-havo: 🌤 \n\n✅ $condition $temp\n✅ Haqiqiy his:  $feels_like,\n✅ $fixedText\n🌇 Quyosh chiqishi:  $sunrise,\n🌆 Quyosh botishi:  $sunset, \n\n📅 Sana: $date vaqtiga ko'ra ma'lumotlar olindi ✅";
+
         } else if ($daily) {
             $weatherType = $type . 'ngi';
             $moon_phase = ($weather['moon_phase'] * 100) . '%';
             $precipitation = ($weather['pop'] * 100) . '%';
 
-            $text = "$city Shahridagi $weatherType Ob-havo:
-            $condition $temp
-            Haqiqiy his:  $feels_like,
-            Minimal harorat:  $temp_min,
-            Maximal harorat:  $temp_max,
-            $fixedText
-            Yog'ingarchilik ehtimoli: $precipitation,
-            Oyning to'linligi: $moon_phase,
-            Quyosh chiqishi:  $sunrise,
-            Quyosh botishi:  $sunset";
+            $text = "🌍 $city Shahridagi 🌇 \n\n🗓 $weatherType Ob-havo: 🌤 \n\n✅ $condition $temp\n✅ Haqiqiy his:  $feels_like,\n✅ Minimal harorat:  $temp_min,\n✅ Maximal harorat:  $temp_max,\n✅ $fixedText\n🌧 Yog'ingarchilik ehtimoli: $precipitation,\n🌖 Oyning to'linligi: $moon_phase,\n🌇 Quyosh chiqishi:  $sunrise,\n🌆 Quyosh botishi:  $sunset";
+
         } else if (isset($sevenDay)) {
             for ($i=0; $i < count($weather); $i++) { 
                 $feels_like = round($weather[$i]['feels_like']['day']) ."°C";
@@ -236,18 +219,9 @@ function showWeather($lat, $lon, $type){
                 $moon_phase = ($weather[$i]['moon_phase'] * 100) . '%';
                 $precipitation = ($weather[$i]['pop'] * 100) . '%';
                 
-                $fixedText = "Bosim:  $pressure, \nNamlik:  $humidity, \nShamol tezligi:  $wind,";
+                $fixedText = "✅ Bosim:  $pressure, \n✅ Namlik:  $humidity, \n\n💨 Shamol tezligi:  $wind,";
 
-                $text = "$city Shahridagi $day-$month Ob-havo:
-                $condition $temp
-                Haqiqiy his:  $feels_like,
-                Minimal harorat:  $temp_min,
-                Maximal harorat:  $temp_max,
-                $fixedText
-                Yog'ingarchilik ehtimoli: $precipitation,
-                Oyning to'linligi: $moon_phase,
-                Quyosh chiqishi:  $sunrise,
-                Quyosh botishi:  $sunset\n\n";
+                $text = "🌍 $city Shahridagi 🌇 \n\n🗓 $day-$month Ob-havo: 🌤 \n\n✅ $condition $temp,\n✅ Haqiqiy his:  $feels_like,\n✅ Minimal harorat:  $temp_min,\n✅ Maximal harorat:  $temp_max,\n$fixedText\n🌧 Yog'ingarchilik ehtimoli: $precipitation,\n🌖 Oyning to'linligi: $moon_phase,\n🌇 Quyosh chiqishi:  $sunrise,\n🌆 Quyosh botishi:  $sunset\n\n";
 
                 count($weather)-1 != $i ? $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $text]) : '';
             }
@@ -277,13 +251,10 @@ function showWeather($lat, $lon, $type){
         $pressure = round($pressure / 24)  ."mbar";
         $humidity = round($humidity / 24)  ."%";
 
-        $fixedText = "Bosim:  $pressure, \nNamlik:  $humidity,\nOsmonda ko'rinadigan (taxminiy) bulutlar soni:  $clouds, \nShamol tezligi:  $wind";
+        $fixedText = "✅ Bosim:  $pressure, \n✅ Namlik:  $humidity,\n☁️ Osmonda ko'rinadigan (taxminiy) bulutlar soni:  $clouds, \n💨 Shamol tezligi:  $wind";
         $weatherType = $type . 'gi';
 
-        $text = "$city Shahridagi $weatherType Ob-havo:
-        $condition $temp
-        Haqiqiy his:  $feels_like,
-        $fixedText";
+        $text = "🌍 $city Shahridagi 🌇 \n\n$weatherType Ob-havo: 🌤 \n\n✅ $condition $temp, \n✅Haqiqiy his:  $feels_like, \n$fixedText";
     }
 
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $text]);
